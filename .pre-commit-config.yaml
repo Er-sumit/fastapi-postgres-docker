@@ -1,3 +1,4 @@
+# https://www.fastapitutorial.com/blog/refactoring-fastapi-application/
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v2.3.0
