@@ -1,4 +1,7 @@
 from fastapi import FastAPI
+from fastapi.logger import logger as fastapi_logger
+
+from core.config import log
 from core.config import settings
 # https://www.fastapitutorial.com/blog/creating-tables-in-fastapi/
 # from db.session import engine 
@@ -24,7 +27,7 @@ def start_application():
 
 
 app = start_application()
-
+log.info("Welcome!")
 
 @app.get("/")
 def home():

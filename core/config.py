@@ -2,6 +2,10 @@
 # Reference: https://www.fastapitutorial.com/blog/fastapi-hello-world/
 
 import os
+import logging
+
+class LogConfig:
+    logger = logging.getLogger("gunicorn.error")
 
 class Settings:
     PROJECT_NAME:str = "MBdgt"
@@ -15,3 +19,4 @@ class Settings:
 
 '''docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres'''
 settings = Settings()
+log = LogConfig.logger
