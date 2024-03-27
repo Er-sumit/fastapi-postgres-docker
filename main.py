@@ -5,14 +5,21 @@ from core.config import settings
 # from db.base_class import Base
 from db.base import Base
 from db.session import engine
+# APIs route file to maintain all route entries
+from apis.base import api_router 
 
 def create_tables():         
 	Base.metadata.create_all(bind=engine)
         
+# include router i.e. api routes defined in base file to this app
+def include_router(app):   
+	app.include_router(api_router)
+      
 
 def start_application():
     app = FastAPI(title=settings.PROJECT_NAME,version=settings.PROJECT_VERSION)
     create_tables()
+    include_router(app)
     return app
 
 
