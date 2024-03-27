@@ -13,9 +13,13 @@ def create_new_user(user:UserCreate,db:Session):
         is_active=True,
         is_superuser=False
         )
-    db.add(user)
-    db.commit()
-    db.refresh(user)
+    try:
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+    except Exception as e:
+        log.info(f"failed to create user, caused by {e}")
+        return None
     return user
 
 '''

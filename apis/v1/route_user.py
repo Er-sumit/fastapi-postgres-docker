@@ -21,6 +21,8 @@ def create_user(user : UserCreate,db: Session = Depends(get_db)):
     log.info(f"New user created? => {True if user else False}")
     if user:
         log.info(f"user={user.email} and status={status.HTTP_201_CREATED    }")
+    else:
+        raise HTTPException(detail=f"Failed to create user", status_code=status.HTTP_400_BAD_REQUEST)
     return user 
 
 
