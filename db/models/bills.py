@@ -9,10 +9,10 @@ from db.base_class import Base
 
 
 class Bills(Base):
-    id = Column(String, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True)
     biller = Column(String, nullable=False, index=True)
     dueDate = Column(String, default=False)
     type = Column(String, default=True)
     billAmount = Column(Integer)
-    paidAmount = Column(String, nullable=True, default=None)
+    paidAmount = Column(Integer, nullable=True, default=None)
     paidStatus = Column(Boolean)

@@ -7,6 +7,7 @@ from apis.v1 import route_login
 from apis.v1 import route_metrics
 from apis.v1 import route_txnmsgs
 from apis.v1 import route_user
+from apis.v1 import route_bills
 
 
 api_router = APIRouter()
@@ -15,5 +16,6 @@ api_router.include_router(route_blog.router, prefix="", tags=["blogs"])
 api_router.include_router(route_login.router, prefix="", tags=["login"])
 api_router.include_router(route_account.router, prefix="", tags=["account"])
 api_router.include_router(route_metrics.router, prefix="", tags=["metrics"])
+api_router.include_router(route_bills.router, prefix="", tags=["bills"])
 api_router.include_router(route_txnmsgs.router, prefix="/txnmsgs", tags=["txnmsgs"])
 # make sure we import this 'api_router' in the main.py file

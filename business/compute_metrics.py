@@ -1,6 +1,7 @@
 from business.definitions.AccountClassifier import AccountClassifier
 from core.config import log
 from db.repository.account import list_accounts
+from db.repository.bills import get_all_bills
 
 
 def get_asset_value(account):
@@ -129,3 +130,9 @@ def total_cash(db, tenure="whole_future"):
         values_list
     )
     return grand_total
+
+def get_total_due_bills(db):
+    total_due_bills = sum(
+        [bill.billAmount for bill in get_all_bills(db=db) if bill.paidStatus == False]
+    )
+    return total_due_bills
