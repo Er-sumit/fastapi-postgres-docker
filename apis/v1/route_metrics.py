@@ -7,6 +7,8 @@ from sqlalchemy.orm import Session
 from business.compute_metrics import liabilities_near_qtr
 from business.compute_metrics import total_assets
 from business.compute_metrics import total_liabilities
+from business.compute_metrics import total_cash
+
 from core.config import log
 from db.session import get_db
 from schemas.metric import AssetLiabilityRatio
@@ -58,3 +60,8 @@ def get_qtly_liability_metrics(db: Session = Depends(get_db)):
 @router.get("/metric/liabilities/qtlys")
 def flake8_handler_():
     raise HTTPException(status_code=fstatus.HTTP_200_OK)
+
+@router.get("/metric/total_cash", response_model=SingleMetricValue)
+def get_total_cash(db: Session = Depends(get_db)):
+    value = total_cash(db)
+    return {"value": value}

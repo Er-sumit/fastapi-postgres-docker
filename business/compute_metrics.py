@@ -118,3 +118,14 @@ def liabilities_near_qtr(db, tenure="whole_future"):
             )
     return_dict["monthly_account_wise_data"] = monthly_account_wise_data
     return return_dict
+
+def total_cash(db, tenure="whole_future"):
+    values_list = [
+        get_asset_value(account)
+        for account in list_accounts(db=db)
+        if account.type == "SBA"
+    ]
+    grand_total = sum(
+        values_list
+    )
+    return grand_total

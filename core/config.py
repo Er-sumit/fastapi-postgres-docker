@@ -5,17 +5,17 @@ import os
 
 
 class LogConfig:
-    logger = logging.getLogger("gunicorn.error")
+    logger = logging.getLogger("app_log")
 
 
 class Settings:
     PROJECT_NAME: str = "MBdgt"
     PROJECT_VERSION: str = "1.0.0"
     POSTGRES_PORT = 5432
-    POSTGRES_USER: str = "postgres"
+    POSTGRES_USER: str = "appuser"
     POSTGRES_DB: str = os.environ.get("DATABASE_PWD", "app")
     POSTGRES_PASSWORD: str = os.environ.get("DATABASE_PWD", "supersecretpassword")
-    DATABASE_URL: str = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@db:{POSTGRES_PORT}/{POSTGRES_DB}"
+    DATABASE_URL: str = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@localhost:{POSTGRES_PORT}/{POSTGRES_DB}"
 
     SECRET_KEY: str = os.environ.get("SECRET_KEY", "skufhoweiu098ye879yih")  # new
     ALGORITHM = "HS256"  # new
