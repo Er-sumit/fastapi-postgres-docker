@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  app:
+    image: fastapi-postgres-prod
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    environment:
+      POSTGRES_HOST: "db"
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: "appuser"
+      POSTGRES_PASSWORD: "supersecretpassword"
+      POSTGRES_DB: "app"
+      SECRET_KEY: "your_secret_key"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: "appuser"
+      POSTGRES_PASSWORD: "supersecretpassword"
+      POSTGRES_DB: "app"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
