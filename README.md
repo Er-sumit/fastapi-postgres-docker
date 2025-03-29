@@ -1,5 +1,7 @@
 ```python3 -m uvicorn main:app --host 0.0.0.0 --port 80 --reload``` command to run this project
 
+```docker run -it --rm -v $(pwd):/app -p 80:8080 fastapi-postgres-dev``` command to run this project with Docker image
+
 Workspace: Collecting workspace information`@workspace` accuracy and speed can be improved by building a remote workspace index. [Learn More](https://aka.ms/vscode-copilot-workspace-remote-index)
 
 Build remote workspace index
