@@ -3,8 +3,15 @@ from sqlalchemy.orm import Session
 
 from db.models.bills import Bills
 from schemas.bills import createBill
+from datetime import datetime
 
 def create_new_bill(bill: createBill, db: Session):
+    try:
+        bill.dueDate = datetime.strptime(bill.dueDate, "%Y-%m-%d")
+    except Exception as e:
+        print(e)
+        return {"status": "error", "message": "Internal server error", "caused_by":
+            str(e)}
     this_doc = Bills(**bill.dict())
     db.add(this_doc)
     db.commit()
@@ -42,7 +49,11 @@ def delete_bill_by_id(id: str, db: Session):
 
 # method to get bills by biller in models.bills.py
 def get_bill_by_biller(biller: str, db: Session):
-    return db.query(Bills).filter(Bills.biller == biller).all()
+    try:
+        db.query(Bills).filter(Bills.biller == biller).all()
+    except Exception as e:
+        print(e)
+        return {"status": "error", "message": "Internal server error", "caused_by": str(e)}
 
 # method to get bills by due date in
 # models.bills.py

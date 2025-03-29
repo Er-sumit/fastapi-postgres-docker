@@ -1,8 +1,12 @@
 from business.definitions.AccountClassifier import AccountClassifier
+from business.utils import get_month_last_date
+from business.utils import get_next_month_terminal_dates
 from core.config import log
 from db.repository.account import list_accounts
 from db.repository.bills import get_all_bills
 
+from datetime import datetime
+import calendar
 
 def get_asset_value(account):
     log.info(f"get_asset_value method received arg of type {type(account)}")
@@ -131,8 +135,56 @@ def total_cash(db, tenure="whole_future"):
     )
     return grand_total
 
-def get_total_due_bills(db):
-    total_due_bills = sum(
-        [bill.billAmount for bill in get_all_bills(db=db) if bill.paidStatus == False]
-    )
+def total_due_bills(db, rel_month="all"):
+    # today's date
+    today = datetime.today()
+    if rel_month == "all":
+        total_due_bills = sum(
+            [bill.billAmount for bill in get_all_bills(db=db) if bill.paidStatus == False]
+        )
+    elif rel_month == "current_month":
+        current_month_first_date = datetime.now().replace(day=1).date()  # Convert to date
+        # Get the last day of the current month
+        current_month_last_date = get_month_last_date(today).date()  # Convert to date
+
+        total_due_bills = sum(
+            [
+                bill.billAmount
+                for bill in get_all_bills(db=db)
+                if bill.paidStatus == False
+                and bill.dueDate >= current_month_first_date
+                and bill.dueDate <= current_month_last_date
+            ]
+        )
+    elif rel_month == "next_month":
+        next_month_first_date, next_month_last_date = get_next_month_terminal_dates(today)
+        next_month_first_date = next_month_first_date.date()  # Convert to date
+        next_month_last_date = next_month_last_date.date()  # Convert to date
+
+        total_due_bills = sum(
+            [
+                bill.billAmount
+                for bill in get_all_bills(db=db)
+                if bill.paidStatus == False
+                and bill.dueDate >= next_month_first_date
+                and bill.dueDate <= next_month_last_date
+            ]
+        )
+    elif rel_month == "next_to_next_month":
+        ntn_first_date, ntn_last_date = get_next_month_terminal_dates(
+            get_next_month_terminal_dates(today)[1]
+        )
+        ntn_first_date = ntn_first_date.date()  # Convert to date
+        ntn_last_date = ntn_last_date.date()  # Convert to date
+
+        total_due_bills = sum(
+            [
+                bill.billAmount
+                for bill in get_all_bills(db=db)
+                if bill.paidStatus == False
+                and bill.dueDate >= ntn_first_date
+                and bill.dueDate <= ntn_last_date
+            ]
+        )
+
     return total_due_bills

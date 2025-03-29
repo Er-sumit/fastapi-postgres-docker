@@ -8,6 +8,7 @@ from business.compute_metrics import liabilities_near_qtr
 from business.compute_metrics import total_assets
 from business.compute_metrics import total_liabilities
 from business.compute_metrics import total_cash
+from business.compute_metrics import total_due_bills
 
 from core.config import log
 from db.session import get_db
@@ -65,3 +66,29 @@ def flake8_handler_():
 def get_total_cash(db: Session = Depends(get_db)):
     value = total_cash(db)
     return {"value": value}
+
+@router.get("/metric/total_due_bills", response_model=SingleMetricValue)
+def get_total_due_bills(db: Session = Depends(get_db)):
+    value = total_due_bills(db)
+    return {"value": value}
+
+# API to get due bills amount for given related month, example current_month, next_month, next_to_next_month
+@router.get("/metric/due_bills/{rel_month}", response_model=SingleMetricValue)
+def get_due_bills_by_month(rel_month: str, db: Session = Depends(get_db)):
+    if rel_month not in ["current_month", "next_month", "next_to_next_month"]:
+        raise HTTPException(
+            status_code=fstatus.HTTP_400_BAD_REQUEST,
+            detail="Invalid related month. Please provide valid related month like current_month, next_month, next_to_next_month",
+        )
+    value = total_due_bills(db, rel_month)
+    return {"value": value}
+
+@router.get("/metric/dashboard/bills_data", response_model=DictMetric)
+def get_dashbord_bills_data(db: Session = Depends(get_db)):
+    data = {
+        "total_dues": total_due_bills(db),
+        "current_month": total_due_bills(db, "current_month"),
+        "next_month": total_due_bills(db, "next_month"),
+        "next_to_next_month": total_due_bills(db, "next_to_next_month"),
+    }
+    return {"data": data}

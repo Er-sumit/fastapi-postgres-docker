@@ -15,7 +15,8 @@ class Settings:
     POSTGRES_USER: str = "appuser"
     POSTGRES_DB: str = os.environ.get("DATABASE_PWD", "app")
     POSTGRES_PASSWORD: str = os.environ.get("DATABASE_PWD", "supersecretpassword")
-    DATABASE_URL: str = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@localhost:{POSTGRES_PORT}/{POSTGRES_DB}"
+    POSTGRES_HOST: str = os.environ.get("POSTGRES_HOST", "localhost")
+    DATABASE_URL: str = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
 
     SECRET_KEY: str = os.environ.get("SECRET_KEY", "skufhoweiu098ye879yih")  # new
     ALGORITHM = "HS256"  # new
