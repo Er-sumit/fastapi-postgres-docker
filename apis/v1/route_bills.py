@@ -35,6 +35,13 @@ def get_bills(db: Session = Depends(get_db)):
     bills = get_all_bills(db=db)
     return bills
 
+# get list of bills sorted by due date
+@router.get("/bills/sorted", response_model=List[viewBill])
+def get_bills_sorted(db: Session = Depends(get_db)):
+    bills = get_all_bills(db=db)
+    bills.sort(key=lambda x: x.dueDate)
+    return bills
+
 @router.get("/bills/{id}", response_model=viewBill)
 def get_bill(id: str, db: Session = Depends(get_db)):
     bill = get_bill_by_id(id=id, db=db)

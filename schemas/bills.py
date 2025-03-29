@@ -1,4 +1,5 @@
 # scheme required for bills model and as used in repository/bills.py
+from datetime import date
 from db.models.bills import Bills
 from pydantic import BaseModel
 
@@ -17,6 +18,7 @@ class viewBill(BaseModel):
     type: str
     billAmount: int
     paidAmount: int
+    dueDate: date
     paidStatus: bool
 
 class statusBill(BaseModel):
